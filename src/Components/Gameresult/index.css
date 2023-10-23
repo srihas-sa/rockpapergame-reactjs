@@ -1,0 +1,10 @@
+.rowallign {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.image {
+  height: 30%;
+  width: 30%;
+}
