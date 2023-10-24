@@ -31,13 +31,15 @@ class GamePlay extends Component {
     onclicking: false,
     current: 0,
     onclickcolserules: false,
+    text: '',
+    newArray: [],
   }
 
   onclicked = id => {
     this.setState({onclicking: true, current: id})
   }
 
-  playagainclicked = () => {
+  onclickplayagain = () => {
     this.setState({onclicking: false})
   }
 
@@ -55,26 +57,70 @@ class GamePlay extends Component {
   }
 */
 
-  onclickedfunction = () => {
-    const {score, current} = this.state
+  resultshow = (you, opponentval) => {
+    let res = ''
+    if (you === 'ROCK') {
+      if (opponentval === 'ROCK') {
+        res = 'IT IS DRAW'
+      } else if (opponentval === 'PAPER') {
+        res = 'YOU LOSE'
+      } else {
+        res = 'YOU WON'
+      }
+    } else if (you === 'PAPER') {
+      if (opponentval === 'PAPER') {
+        res = 'IT IS DRAW'
+      } else if (opponentval === 'SCISSORS') {
+        res = 'YOU LOSE'
+      } else {
+        res = 'YOU WON'
+      }
+    } else if (you === 'SCISSORS') {
+      if (opponentval === 'SCISSORS') {
+        res = 'IT IS DRAW'
+      } else if (opponentval === 'ROCK') {
+        res = 'YOU LOSE'
+      } else {
+        res = 'YOU WON'
+      }
+    }
+    return res
+  }
 
+  opponentrandomchoice = id => {
+    console.log()
+    const {score} = this.state
+    const you = choicesList[id]
+    console.log(you)
     const opponentint = Math.floor(Math.random() * 3)
     const opponentval = choicesList[opponentint].id
-    return (
-      <Gameresult
-        score={score}
-        current={current}
-        opponentint={opponentint}
-        opponentval={opponentval}
-        onclickplayagain={this.playagainclicked}
-        // onIncreasescore={this.onIncreasescore}
-        //  onDecreasescore={this.onDecreasescore}
-      />
-    )
+    const result = this.resultshow(you.id, opponentval)
+    let updatedscore = score
+    if (result === 'YOU WON') {
+      updatedscore = score + 1
+    } else if (result === 'YOU LOSE') {
+      updatedscore = score - 1
+    } else {
+      updatedscore = score
+    }
+
+    this.setState({
+      onclicking: true,
+      score: updatedscore,
+      text: result,
+      newArray: [you, choicesList[opponentint]],
+    })
   }
 
   render() {
-    const {onclicking, score, current, onclickcolserules} = this.state
+    const {
+      onclicking,
+      score,
+      current,
+      onclickcolserules,
+      text,
+      newArray,
+    } = this.state
     return (
       <div className="outer">
         <div className="score">
@@ -84,41 +130,14 @@ class GamePlay extends Component {
           </div>
         </div>
 
-        {onclicking ? (
-          <div>{this.onclickedfunction()}</div>
-        ) : (
-          <div className="divcontainet">
-            <button type="button" data-testid="rockButton">
-              <img
-                src={choicesList[0].imageUrl}
-                alt={choicesList[0].id}
-                key={choicesList[0].id}
-                onClick={() => this.onclicked(0)}
-                className="imagesss"
-              />
-            </button>
-            <button type="button" data-testid="paperButton">
-              <img
-                src={choicesList[1].imageUrl}
-                alt={choicesList[1].id}
-                key={choicesList[1].id}
-                onClick={() => this.onclicked(1)}
-                className="imagesss"
-              />
-            </button>
-            <button type="button" data-testid="scissorsButton">
-              <img
-                src={choicesList[2].imageUrl}
-                alt={choicesList[2].id}
-                key={choicesList[2].id}
-                onClick={() => this.onclicked(2)}
-                className="imagesss"
-              />
-            </button>
-
-            <Popups />
-          </div>
-        )}
+        <Gameresult
+          onclicking={onclicking}
+          opponentrandomchoice={this.opponentrandomchoice}
+          text={text}
+          score={score}
+          newArray={newArray}
+          onclickplayagain={this.onclickplayagain}
+        />
       </div>
     )
   }

@@ -1,9 +1,11 @@
+import './index.css'
+
 const Score = props => {
   const {score} = props
   return (
     <div>
       <p>Score</p>
-      <p>{score}</p>
+      <p className="scorr">{score}</p>
     </div>
   )
 }

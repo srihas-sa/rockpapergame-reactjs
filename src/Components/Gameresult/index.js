@@ -25,16 +25,13 @@ const Gameresult = prop => {
     score,
     current,
     onclickplayagain,
-    // onIncreasescore,
-    // onDecreasescore,
-    opponentval,
-    opponentint,
+    onclicking,
+    newArray,
+    opponentrandomchoice,
+    text,
   } = prop
-  console.log(choicesList[current].id)
-  console.log(opponentval)
 
-  let resu = ''
-
+  console.log(newArray)
   /*
   const incrementscore = () => {
     console.log(score)
@@ -47,77 +44,81 @@ const Gameresult = prop => {
   }
 */
 
+  const onclicked = id => {
+    console.log(id)
+    opponentrandomchoice(id)
+  }
+
   const playagainclicked = () => {
     onclickplayagain()
   }
-
-  switch (true) {
-    case choicesList[current].id === 'ROCK':
-      if (opponentval === 'ROCK') {
-        resu = 'IT IS DRAW'
-      } else if (opponentval === 'PAPER') {
-        resu = 'YOU LOSE'
-      } else {
-        resu = 'YOU WON'
-      }
-
-      break
-
-    case choicesList[current].id === 'PAPER':
-      if (opponentval === 'PAPER') {
-        resu = 'IT IS DRAW'
-      } else if (opponentval === 'SCISSORS') {
-        resu = 'YOU LOSE'
-      } else {
-        resu = 'YOU WON'
-      }
-
-      break
-
-    case choicesList[current].id === 'SCISSORS':
-      if (opponentval === 'SCISSORS') {
-        resu = 'IT IS DRAW'
-      } else if (opponentval === 'ROCK') {
-        resu = 'YOU LOSE'
-      } else {
-        resu = 'YOU WON'
-      }
-
-      break
-    default:
-      ;<h1>edehou</h1>
-  }
-  if (resu === 'YOU WON') {
-    console.log(resu)
-    // incrementscore()
-  } else if (resu === 'You Lose') {
-    console.log(resu)
-    // decreasing()
-  }
-
   return (
     <div>
-      <div className="rowallign">
-        <Score score={score} />
+      {onclicking ? (
         <div>
-          <img
-            src={choicesList[current].imageUrl}
-            alt="your choice"
-            className="image"
-          />
-        </div>
-        <img
-          src={choicesList[opponentint].imageUrl}
-          alt="opponent choice"
-          className="image"
-        />
-      </div>
-      <p>{resu}</p>
-      <button onClick={playagainclicked} type="button">
-        PLAY AGAIN
-      </button>
+          <div className="rowallign">
+            <div>
+              <img
+                src={newArray[0].imageUrl}
+                alt="your choice"
+                className="image"
+              />
+            </div>
+            <img
+              src={newArray[1].imageUrl}
+              alt="opponent choice"
+              className="image"
+            />
+          </div>
+          <p>{text}</p>
+          <button onClick={playagainclicked} type="button">
+            PLAY AGAIN
+          </button>
 
-      <Popups />
+          <Popups />
+        </div>
+      ) : (
+        <div className="divcontainet">
+          <button
+            type="button"
+            data-testid="rockButton"
+            onClick={() => onclicked(0)}
+          >
+            <img
+              src={choicesList[0].imageUrl}
+              alt={choicesList[0].id}
+              key={choicesList[0].id}
+              className="imagesss"
+            />
+          </button>
+          <button
+            type="button"
+            data-testid="paperButton"
+            onClick={() => onclicked(1)}
+          >
+            <img
+              src={choicesList[1].imageUrl}
+              alt={choicesList[1].id}
+              key={choicesList[1].id}
+              className="imagesss"
+            />
+          </button>
+          <button
+            type="button"
+            data-testid="scissorsButton"
+            onClick={() => onclicked(2)}
+          >
+            <img
+              src={choicesList[2].imageUrl}
+              alt={choicesList[2].id}
+              key={choicesList[2].id}
+              className="imagesss"
+            />
+          </button>
+
+          <Popups />
+        </div>
+      )}
     </div>
   )
 }
